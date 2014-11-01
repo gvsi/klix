@@ -124,6 +124,7 @@ exports.vote = function(socket) {
 						}
 					}
 				}
+				console.log('Uservoted: ' + theDoc.userVoted);
 				
 				socket.emit('myvote', theDoc);
 				socket.broadcast.emit('vote', theDoc);
