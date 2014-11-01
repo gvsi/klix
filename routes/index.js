@@ -5,7 +5,7 @@ if (process.env.VCAP_SERVICES) {
    var env = JSON.parse(process.env.VCAP_SERVICES);
    db = mongoose.createConnection(env['mongodb-2.2'][0].credentials.url);
 } else {
-   db = mongoose.createConnection('mongodb://gvsi:edinbros@dogen.mongohq.com:10001/app31163915');
+   db = mongoose.createConnection('mongodb://gvsi:edinbros@dogen.mongohq.com:10001/app31163915/polls');
    //db = mongoose.createConnection('localhost', 'pollsapp');
 }
 
