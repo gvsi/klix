@@ -4,6 +4,10 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
+var redis = require('redis');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
 var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -14,9 +18,20 @@ app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
+app.use(express.cookieParser());
 app.use(express.methodOverride());
+
+app.use(session({
+    store: new MongoStore({
+    	url: 'mongodb://gvsi:edinbros@dogen.mongohq.com:10001/app31163915'
+    }),
+    secret: 'keyboard cat'
+}));
+
+app.use(express.session({secret: 'keyboard cat'}));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Handle Errors gracefully
 app.use(function(err, req, res, next) {
@@ -26,7 +41,12 @@ app.use(function(err, req, res, next) {
 });
 
 // Main App Page
-app.get('/', routes.index);
+//app.get('/', routes.index);
+
+app.get('/', function(req, res) {
+  res.write('Last page was: ' + req.session.lastPage + '. ');
+  //console.log(res.session);
+});
 
 // MongoDB API Routes
 app.get('/polls/polls', routes.list);
