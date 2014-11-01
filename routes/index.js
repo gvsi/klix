@@ -100,7 +100,7 @@ exports.vote = function(socket) {
 		var ip = sess_id;
 		Poll.findById(data.poll_id, function(err, poll) {
 			var choice = poll.choices.id(data.choice);
-			choice.votes.push({ ip: sess_id });
+			choice.votes.push({ ip: ip });
 			
 			poll.save(function(err, doc) {
 				var theDoc = { 
@@ -116,9 +116,9 @@ exports.vote = function(socket) {
 					for(var j = 0, jLn = choice.votes.length; j < jLn; j++) {
 						var vote = choice.votes[j];
 						theDoc.totalVotes++;
-						theDoc.ip = sess_id;
+						theDoc.ip = ip;
 
-						if(vote.ip === sess_id) {
+						if(vote.ip === ip) {
 							theDoc.userVoted = true;
 							theDoc.userChoice = { _id: choice._id, text: choice.text };
 						}
