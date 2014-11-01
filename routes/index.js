@@ -1,6 +1,7 @@
 // Connect to MongoDB using Mongoose
 var mongoose = require('mongoose');
 var db;
+var sess_id;
 if (process.env.VCAP_SERVICES) {
    var env = JSON.parse(process.env.VCAP_SERVICES);
    db = mongoose.createConnection(env['mongodb-2.2'][0].credentials.url);
@@ -13,9 +14,14 @@ if (process.env.VCAP_SERVICES) {
 var PollSchema = require('../models/Poll.js').PollSchema;
 var Poll = db.model('polls', PollSchema);
 
+exports.session_info = function(req, res) {
+
+}
+
 // Main application view
 exports.index = function(req, res) {
 	res.render('index');
+	sess_id = req.session.id;
 };
 
 // JSON API for list of polls
@@ -89,9 +95,9 @@ exports.create = function(req, res) {
 };
 
 exports.vote = function(socket) {
+	console.log('sess_id: ' + sess_id);
 	socket.on('send:vote', function(data) {
 		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
-		
 		Poll.findById(data.poll_id, function(err, poll) {
 			var choice = poll.choices.id(data.choice);
 			choice.votes.push({ ip: ip });

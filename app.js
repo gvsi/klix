@@ -20,6 +20,7 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     store: new MongoStore({
@@ -27,11 +28,9 @@ app.use(session({
     }),
     secret: 'keyboard cat'
 }));
-
 app.use(express.session({secret: 'keyboard cat'}));
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(app.router);
 
 // Handle Errors gracefully
 app.use(function(err, req, res, next) {
@@ -43,10 +42,7 @@ app.use(function(err, req, res, next) {
 // Main App Page
 //app.get('/', routes.index);
 
-app.get('/', function(req, res) {
-  res.write('Last page was: ' + req.session.lastPage + '. ');
-  //console.log(res.session);
-});
+app.get('/', routes.index);
 
 // MongoDB API Routes
 app.get('/polls/polls', routes.list);
