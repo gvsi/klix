@@ -52,7 +52,7 @@ exports.poll = function(req, res) {
 				for(v in choice.votes) {
 					var vote = choice.votes[v];
 					totalVotes++;
-
+					console.log("session here is: " + req.session.id)
 					if(vote.ip === req.session.id) {
 						userVoted = true;
 						userChoice = { _id: choice._id, text: choice.text };
