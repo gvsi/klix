@@ -95,9 +95,10 @@ exports.create = function(req, res) {
 };
 
 exports.vote = function(socket) {
-	console.log('sess_id: ' + sess_id);
+	console.log('sess_id during voting: ' + sess_id);
 	socket.on('send:vote', function(data) {
-		var ip = sess_id;
+		var ip = socket.handshake.sessionID;
+		console.log("this is it: " + ip);
 		Poll.findById(data.poll_id, function(err, poll) {
 			var choice = poll.choices.id(data.choice);
 			choice.votes.push({ ip: ip });
@@ -124,7 +125,7 @@ exports.vote = function(socket) {
 						}
 					}
 				}
-				console.log('Uservoted: ' + theDoc.userVoted);
+				console.log('Uservoted has voted: ' + theDoc.userVoted);
 				
 				socket.emit('myvote', theDoc);
 				socket.broadcast.emit('vote', theDoc);
