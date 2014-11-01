@@ -53,7 +53,7 @@ exports.poll = function(req, res) {
 					var vote = choice.votes[v];
 					totalVotes++;
 
-					if(vote.ip === sess_id) {
+					if(vote.ip === req.session.id) {
 						userVoted = true;
 						userChoice = { _id: choice._id, text: choice.text };
 					}
