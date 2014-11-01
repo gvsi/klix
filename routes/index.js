@@ -97,7 +97,7 @@ exports.create = function(req, res) {
 exports.vote = function(socket) {
 	console.log('sess_id during voting: ' + sess_id);
 	socket.on('send:vote', function(data) {
-		var ip = socket.handshake.sessionID;
+		var ip = socket.handshake.cookies;
 		console.log("this is it: " + ip);
 		Poll.findById(data.poll_id, function(err, poll) {
 			var choice = poll.choices.id(data.choice);
