@@ -97,10 +97,10 @@ exports.create = function(req, res) {
 exports.vote = function(socket) {
 	console.log('sess_id: ' + sess_id);
 	socket.on('send:vote', function(data) {
-		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
+		var ip = sess_id;
 		Poll.findById(data.poll_id, function(err, poll) {
 			var choice = poll.choices.id(data.choice);
-			choice.votes.push({ ip: ip });
+			choice.votes.push({ ip: sess_id });
 			
 			poll.save(function(err, doc) {
 				var theDoc = { 
@@ -116,9 +116,9 @@ exports.vote = function(socket) {
 					for(var j = 0, jLn = choice.votes.length; j < jLn; j++) {
 						var vote = choice.votes[j];
 						theDoc.totalVotes++;
-						theDoc.ip = ip;
+						theDoc.ip = sess_id;
 
-						if(vote.ip === ip) {
+						if(vote.ip === sess_id) {
 							theDoc.userVoted = true;
 							theDoc.userChoice = { _id: choice._id, text: choice.text };
 						}
