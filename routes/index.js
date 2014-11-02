@@ -98,9 +98,8 @@ exports.vote = function(socket) {
 	console.log('sess_id during voting: ' + sess_id);
 	socket.on('send:vote', function(data) {
 		var ip;
-		var socket_ = io();
 		socket.on('connect', function(){
-		    ip = socket_.io.engine.id;
+		    ip = socket.socket.io.engine.id;
 		});
 
 		console.log("HEEYYYYY: " + ip);
