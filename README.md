@@ -8,4 +8,4 @@ We believe that using clickers are a great way of learning, that tries to addres
 #Technology
 Klix is a real-time question and answer web app. It uses Node.js with Socket.io framework, Express, AngularJS and MongoDB to store questions and answers.
 
-A live version is available on bloodcurdling-warlock-3062.herokuapp.com
+A live version is available on http://bloodcurdling-warlock-3062.herokuapp.com
